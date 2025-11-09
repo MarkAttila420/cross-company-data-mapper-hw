@@ -1,10 +1,13 @@
-import React from 'react'
+import React from 'react';
+import MappingTool from './components/MappingTool';
 
-export default function App() {
+const App: React.FC = () => {
   return (
-    <div style={{padding:20}}>
-      <h1>Cross-Company Mapper (UI placeholder)</h1>
-      <p>Upload source and target JSON to get AI mapping suggestions (implement later).</p>
+    <div style={{ padding: 20 }}>
+      <h1>Cross Company Mapper</h1>
+      <MappingTool />
     </div>
-  )
-}
+  );
+};
+
+export default App;

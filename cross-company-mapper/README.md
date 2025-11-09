@@ -19,6 +19,6 @@ Next steps:
 
 Time log: (fill in when implementing)
 - Mapping service: 1h:15m
-- Validation service: 0h
-- Frontend: 0h
+- Validation service: 30m
+- Frontend: 30m
 - Integration & infra: 0h

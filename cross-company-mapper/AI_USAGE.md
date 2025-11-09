@@ -4,6 +4,9 @@ This file should document how AI was used in the project. Include the following 
 
 ## Used tools
 - [Tool name] — what it was used for (example: prompt design, code scaffolding, mapping suggestions)
+- Gemini - translating the task from hungarian to english
+- Github Copilot (GPT-5 mini) - Code generation
+- Claude - System design
 
 ## Example prompts
 - Provide at least 3 concrete prompts used to generate mapping suggestions, transformation rules, or validation rules.
@@ -200,7 +203,7 @@ Create Python functions to validate:
 ## Corrections made to AI outputs
 - Describe where AI output needed manual correction and why.
 
+When the .env was created with the environment variables for the api key, i had to write the api key obviously, because the copilot cannot know my api key.
+
 ## Time saved
 - Estimate how much time AI saved for each task (e.g., scaffolding, mapping, tests).
-
-(Replace this placeholder with real content when AI is used.)
