@@ -18,7 +18,7 @@ Next steps:
 4. Integrate AI API for mapping suggestions and rule generation.
 
 Time log: (fill in when implementing)
-- Mapping service: 0h
+- Mapping service: 1h:15m
 - Validation service: 0h
 - Frontend: 0h
 - Integration & infra: 0h

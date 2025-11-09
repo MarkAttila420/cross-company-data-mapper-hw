@@ -96,6 +96,95 @@ Create a Dockerfile for Spring Boot application:
 
 ===================
 
+### Step 1: Initialize FastAPI Project
+
+**File structure:**
+```
+validation-service/
+├── app/
+│   ├── main.py
+│   ├── models.py
+│   ├── validators.py
+│   └── rules.py
+├── requirements.txt
+└── Dockerfile
+```
+
+===================
+
+Create Python functions to validate:
+1. Age calculation from birthDate (must be >= 18)
+2. Email format validation using regex
+3. Phone number format validation
+4. Required field checks
+5. Return validation results with field name, valid (boolean), and error message
+
+===================
+
+
+
+===================
+
+
+
+===================
+
+
+
+===================
+
+
+
+===================
+
+
+
+===================
+
+
+
+===================
+
+
+
+===================
+
+
+
+===================
+
+
+
+===================
+
+
+
+===================
+
+
+
+===================
+
+
+
+===================
+
+
+
+===================
+
+
+
+===================
+
+
+
+===================
+
+
+
+===================
+
 
 
 ===================
