@@ -17,8 +17,9 @@ Next steps:
 3. Bootstrapped React+TypeScript frontend to upload JSON and show mapping suggestions.
 4. Integrate AI API for mapping suggestions and rule generation.
 
-Time log: (fill in when implementing)
+Time log:
 - Mapping service: 1h:15m
 - Validation service: 30m
 - Frontend: 30m
-- Integration & infra: 0h
+- Integration & infra: 30m
+- Fixing the generated code: 2h 15m
