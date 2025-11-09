@@ -1,25 +1,34 @@
 # Cross-Company Mapper (POC)
 
-This repository contains a proof-of-concept project for cross-company data mapping (homework).
+Ez a repository egy proof-of-concept projektet tartalmaz, a cross-company data mapping otthoni feladat megoldását, ami a FluentaOne Full-Stack developer pozíció kiválasztási folyamatának egyik lépése.
 
-Structure created:
+## Létrehozott struktúra:
 
-- `mapping-service/`    — Java (Spring Boot) service (placeholder)
-- `validation-service/` — Python (Flask/FastAPI) service (placeholder)
-- `frontend/`           — React + TypeScript app (placeholder)
-- `docker-compose.yml`  — stub compose to run services together
-- `AI_USAGE.md`         — AI usage documentation (placeholder)
-- `ARCHITECTURE.md`     — short architecture decisions (placeholder)
+- `mapping-service/`    - Java (Spring Boot) service 
+- `validation-service/` - Python (FastAPI) service 
+- `frontend/`           - React + TypeScript app
+- `example_data/`       - Példa JSON fájlok
+- `docker-compose.yml`  - compose, ami a service-eket futtatjaa együtt
+- `AI_USAGE.md`         - AI használat dokumentáció
+- `ARCHITECTURE.md`     - Architekturális döntések rövid leírása
+- `README.md`           - Futtatási útmutató, időrefárdítás
+- `.gitignore`          - Gitignore fájl, mik ne legyenek feltöltve GitHubra
+- `.env`                - Környezeti változók (nincs verziókezelve)
+- `.env.example`        - A .env-be szükséges változók
 
-Next steps:
-1. Implement the mapping service in Java (Spring Boot).
-2. Implement the validation service in Python (FastAPI recommended).
-3. Bootstrapped React+TypeScript frontend to upload JSON and show mapping suggestions.
-4. Integrate AI API for mapping suggestions and rule generation.
+## Időráfordítás:
+- Leképező szolgáltatás: 1ó 15p
+- Validációs szolgáltatás: 30p
+- Frontend: 30p
+- Integráció és infra: 30p
+- A generált kód javítása: 2ó 15p
 
-Time log:
-- Mapping service: 1h:15m
-- Validation service: 30m
-- Frontend: 30m
-- Integration & infra: 30m
-- Fixing the generated code: 2h 15m
+## Futtatás Docker Compose-al
+
+- A .env.example tartalmát be kell másolnia .env-be, szükséges változókat kitölteni (GEMINI_API_KEY). 
+- Ezután build és indítás:
+    - `docker-compose up --build`
+- Ezután a következő helyen lesznek elérhetők a rendszerek:
+    - `frontend`: http://localhost:3000
+    - `mapping-service`: http://localhost:8080
+    - `validation-service`: http://localhost:8000

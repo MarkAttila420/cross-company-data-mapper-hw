@@ -1,27 +1,19 @@
 # Architecture Decisions (one page)
 
-This document captures the high-level choices for the POC.
+Architektúra döntések.
 
-Services
-- mapping-service: Java (Spring Boot). Chosen for strong JSON/XML tooling, and familiarity in enterprise environments.
-- validation-service: Python (FastAPI). Chosen for quick prototyping, lightweight runtime and convenient data validation with Pydantic.
-- frontend: React + TypeScript. Familiar for quick UI and type safety.
+## Services
+- mapping-service: Java (Spring Boot). Azért ezt választottam, mivel ez az amelyiket a legjobban ismerem, amelyikben a legtöbb tapasztalatom van.
+- validation-service: Python. Azért, mert ebben van a második legtöbb tapastzalatom, és ennek egyszerűbb a struktúrája.
+- frontend: React + TypeScript. A frontendnek ez volt megadva, de más frontend is használható lett volna, mivel nem kellett összetett frontendet fejleszteni, csak pár gomb és szerkeszthető mező
 
-AI
-- Use any modern LLM (OpenAI/GPT, Claude, Gemini). The AI will be used for:
-  - Field mapping suggestions
-  - Transformation rule suggestions (date formats, name splitting)
-  - Validation rule generation
+## AI
+- Gemini API lett használva, mivel ez ingyenes és elterjedt.
+- AI mapping javaslatok generálására
+- Validációs szabályók generálására (kifutottam az időből, így ez végül nem lett megvlósítva, pár promt és kevés idő és megvalósítható lett volna)
 
-Infra
-- Docker Compose to orchestrate the three services for the demo.
-- In-memory storage for mapping templates (to keep the POC simple).
-
-Tradeoffs
-- No DB in POC to save time (templates in-memory). This means mappings are ephemeral across restarts.
-- No auth (API key or local dev only), as per assignment constraints.
-
-Next steps when moving beyond POC:
-- Persist mapping templates in a small database (SQLite/Postgres).
-- Add tests around mapping/validation logic.
-- Add OpenAPI/Swagger for each service.
+## Továbbfejlesztési javaslatok
+- A mapping minták eltárolása adatbázisban (pl. PostgreSQL)
+- Tesztek
+- Dokumentáció
+- Kód részletesebb átvizsgálása, és hibák kijavítása, amik a POC alatt nem jöttek elő

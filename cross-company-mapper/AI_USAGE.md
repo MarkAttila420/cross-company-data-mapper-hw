@@ -1,15 +1,12 @@
-# AI Usage Documentation
+# AI használat dokumentáció
 
-This file should document how AI was used in the project. Include the following sections:
+## Használt eszközök
+- Gemini - a feladat lefordítása angol nyelvre
+- Gemini API - a kódban az AI funkciók megvalósítására
+- Github Copilot (GPT-5 mini) - Kód generálás
+- Claude - Rendszerterv
 
-## Used tools
-- Gemini - translating the task from hungarian to english
-- Gemini API - used in the code for completing the task
-- Github Copilot (GPT-5 mini) - Code generation
-- Claude - System design
-
-## Example prompts
-- Provide at least 3 concrete prompts used to generate mapping suggestions, transformation rules, or validation rules.
+## Konkrét promptok
 
 create the folder structure:
 cross-company-mapper/
@@ -21,10 +18,11 @@ cross-company-mapper/
 ├── AI_USAGE.md
 └── ARCHITECTURE.md
 
-==================
+===================
 create a .gitignore file for the react+typescript frontend, java, python backend
 
-=================
+===================
+
 do not write the solution yet, just make the dockerfiles, and the filestructure:
 I need to build a microservice system with:
 1. Mapping service in Java (Spring Boot) with these endpoints:
@@ -40,7 +38,7 @@ I need to build a microservice system with:
 
 Generate the basic project structure with Dockerfiles for each service.
 
-=================
+===================
 
 in the mapping-service:
 Create Java POJOs for:
@@ -122,12 +120,16 @@ Create Python functions to validate:
 4. Required field checks
 5. Return validation results with field name, valid (boolean), and error message
 
-## Corrections made to AI outputs
-- Describe where AI output needed manual correction and why.
+===================
 
-When the .env was created with the environment variables for the api key, i had to write the api key obviously, because the copilot cannot know my api key.
-On the frontend the wrong routes were used, so i had to fix it to use the correct ones.
-Small ui fixes, where the gnerated code had ux errors.
+## AI hibák és javítások
+Hol kellett korrigálni az AI outputot és miért
 
-## Time saved
-- Estimate how much time AI saved for each task (e.g., scaffolding, mapping, tests).
+- Nem korrigálás, de a .env-be az API kulcsot be kellett írni.
+- Frontenden volt egy kis hiba amit gyorsan ki lehetett javítani.
+- Frontenden rosz útvonalat használt, ez ki lett cserélve.
+
+## Időmegtakarítás
+Becslés: mennyi időt spórolt az AI használattal
+
+Ha 100%-ban AI nélkül fejlesztettem volna, akkor több hétbe is beletelt volna a funkciók lefejlesztése. A frontend fejlesztésében is pár órát vagy talán 1-2 napot is segített, mivel ezelőtt nagyon keveset fejlesztettem React frontendet. Ha viszont AI-t csak úgy használtam volna, mint egy Senior fejlesztő segítségét, hogy csak akkor ha elakadok, akkor is legalább egy hét munkályát megspórolta.
