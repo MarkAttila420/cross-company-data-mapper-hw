@@ -7,9 +7,8 @@ services:
     restart: unless-stopped
     ports:
       - "8080:8080"
-    environment:
-      - GEMINI_ENDPOINT=${GEMINI_ENDPOINT}
-      - GEMINI_API_KEY=${GEMINI_API_KEY}
+    # Load GEMINI_* from local .env file (keeps secrets out of the compose file)
+    env_file: .env
     networks:
       - app-network
     healthcheck:

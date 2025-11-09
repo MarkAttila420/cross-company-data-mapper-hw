@@ -1,0 +1,19 @@
+{
+  "Customer": {
+    "CIF": "12345",
+    "PersonalData": {
+      "FullName": "Nagy János",
+      "BirthDate": "1985-03-15",
+      "TaxID": "8765432109"
+    },
+    "ContactInfo": {
+      "PrimaryPhone": "+36301234567",
+      "EmailAddr": "nagy.janos@email.hu"
+    },
+    "Address": {
+      "PostalCode": "1011",
+      "City": "Budapest",
+      "StreetAddress": "Fő utca 1."
+    }
+  }
+}

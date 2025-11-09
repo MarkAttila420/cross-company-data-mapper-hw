@@ -32,7 +32,14 @@ def validate_age(birthdate: Any, field_name: str = "birthDate") -> Dict[str, Any
         if isinstance(birthdate, (date, datetime)):
             dob = birthdate.date() if isinstance(birthdate, datetime) else birthdate
         elif isinstance(birthdate, str):
-            dob = date.fromisoformat(birthdate)
+            # Accept ISO YYYY-MM-DD or common dd/MM/YYYY formats produced by the transformer
+            try:
+                dob = date.fromisoformat(birthdate)
+            except Exception:
+                try:
+                    dob = datetime.strptime(birthdate, "%d/%m/%Y").date()
+                except Exception:
+                    raise
         else:
             return {"field": field_name, "valid": False, "error": "unsupported birthDate type"}
     except Exception:
@@ -98,15 +105,93 @@ def validate_payload(data: Dict[str, Any]) -> List[Dict[str, Any]]:
     rules = get_rules()
     results: List[Dict[str, Any]] = []
 
+    # Helper: recursively search nested dicts for a key (first occurrence)
+    def _find_key(obj: Any, key_names: List[str]):
+        """Return a tuple (found_key_name, value) for the first matching key name in the nested object.
+
+        Searches dicts and lists recursively. Returns (None, None) if nothing found.
+        """
+        if obj is None:
+            return (None, None)
+        if isinstance(obj, dict):
+            for k, v in obj.items():
+                if k in key_names:
+                    return (k, v)
+            # not at this level, search deeper
+            for v in obj.values():
+                fk, fv = _find_key(v, key_names)
+                if fk is not None:
+                    return (fk, fv)
+        elif isinstance(obj, list):
+            for item in obj:
+                fk, fv = _find_key(item, key_names)
+                if fk is not None:
+                    return (fk, fv)
+        return (None, None)
+
+    # Build a lightweight lookup that prefers top-level fields but will
+    # also find commonly-named fields nested anywhere in the payload.
+    lookup: Dict[str, Any] = {}
+    # copy top-level keys
+    for k, v in data.items():
+        lookup[k] = v
+
+    # fields we know how to validate by name (and common variants)
+    # we search nested structures if the top-level key is not present
+    search_map = {
+        "birthDate": ["birthDate", "dateOfBirth", "dob"],
+        "email": ["email", "emailAddress", "emailAddr"],
+        "phone": ["phone", "phoneNumber", "mobile", "PrimaryPhone"]
+    }
+
+    for canonical, variants in search_map.items():
+        if canonical not in lookup:
+            fk, fv = _find_key(data, variants)
+            if fk is not None:
+                lookup[canonical] = fv
+
+    # Content-based fallback: if email or phone still not found, scan values for
+    # obvious candidates (an '@' containing string for email, or a digit-heavy
+    # string for phone). This helps when transformed payloads place fields under
+    # unexpected names.
+    def _scan_for_values(obj: Any):
+        """Yield all string values found anywhere in obj."""
+        if obj is None:
+            return
+        if isinstance(obj, dict):
+            for v in obj.values():
+                yield from _scan_for_values(v)
+        elif isinstance(obj, list):
+            for item in obj:
+                yield from _scan_for_values(item)
+        elif isinstance(obj, str):
+            yield obj
+
+    # attempt to find an email-like string if not present
+    if "email" not in lookup:
+        for s in _scan_for_values(data):
+            if isinstance(s, str) and _EMAIL_RE.match(s):
+                lookup["email"] = s
+                break
+
+    # attempt to find a phone-like string if not present
+    if "phone" not in lookup:
+        for s in _scan_for_values(data):
+            if isinstance(s, str):
+                digits = re.sub(r"\D", "", s)
+                if 7 <= len(digits) <= 15:
+                    lookup["phone"] = s
+                    break
+
     # required fields
     required = rules.get("required_fields", [])
-    results.extend(check_required_fields(data, required))
+    results.extend(check_required_fields(lookup, required))
 
     # type expectations (keep these but report structured results)
     types = rules.get("types", {})
     for field, expected in types.items():
-        if field in data:
-            val = data[field]
+        if field in lookup:
+            val = lookup[field]
             if expected == "int":
                 if not isinstance(val, int):
                     results.append({"field": field, "valid": False, "error": f"expected int, got {_type_name(val)}"})
@@ -118,17 +203,16 @@ def validate_payload(data: Dict[str, Any]) -> List[Dict[str, Any]]:
                 else:
                     results.append({"field": field, "valid": True, "error": None})
 
-    # domain-specific checks
-    if "birthDate" in data:
-        results.append(validate_age(data.get("birthDate"), field_name="birthDate"))
+    # domain-specific checks using the lookup that includes nested discoveries
+    if "birthDate" in lookup:
+        results.append(validate_age(lookup.get("birthDate"), field_name="birthDate"))
 
-    if "email" in data:
-        results.append(validate_email(data.get("email"), field_name="email"))
+    if "email" in lookup:
+        results.append(validate_email(lookup.get("email"), field_name="email"))
 
-    # accept phone or phoneNumber keys
-    phone_key = "phone" if "phone" in data else ("phoneNumber" if "phoneNumber" in data else None)
-    if phone_key:
-        results.append(validate_phone(data.get(phone_key), field_name=phone_key))
+    # accept phone or phoneNumber keys (lookup already normalizes common variants to 'phone')
+    if "phone" in lookup:
+        results.append(validate_phone(lookup.get("phone"), field_name="phone"))
 
     # deduplicate results by field, preferring invalid messages if multiple
     final: Dict[str, Dict[str, Any]] = {}

@@ -5,8 +5,8 @@ import ValidationResults from './ValidationResults';
 
 const containerStyle: React.CSSProperties = { padding: 16, border: '1px solid #ddd', borderRadius: 6, marginTop: 16 };
 const fileBoxStyle: React.CSSProperties = { display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 12 };
-const tableStyle: React.CSSProperties = { width: '100%', borderCollapse: 'collapse' };
-const thtdStyle: React.CSSProperties = { border: '1px solid #eee', padding: '8px' };
+const tableStyle: React.CSSProperties = { width: '100%', borderCollapse: 'collapse', tableLayout: 'fixed' };
+const thtdStyle: React.CSSProperties = { border: '1px solid #eee', padding: '8px', wordBreak: 'break-word', verticalAlign: 'top' };
 
 function readFileAsText(file?: File): Promise<string> {
   return new Promise((resolve, reject) => {
@@ -137,7 +137,7 @@ const MappingTool: FC = () => {
       {message && <div style={{ color: 'darkred', marginBottom: 8 }}>{message}</div>}
 
       <div>
-        <h3>AI-suggested mappings</h3>
+        <h3>Mappings</h3>
         {mappings.length === 0 ? (
           <p>No mappings yet.</p>
         ) : (
@@ -173,7 +173,8 @@ const MappingTool: FC = () => {
                         }
                       }}
                       rows={3}
-                      style={{ width: '100%' }}
+                      // allow only vertical resize and ensure textarea doesn't change table width
+                      style={{ width: '100%', boxSizing: 'border-box', resize: 'vertical', maxWidth: '100%' }}
                     />
                   </td>
                   <td style={thtdStyle}>

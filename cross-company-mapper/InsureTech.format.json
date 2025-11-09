@@ -1,0 +1,21 @@
+{
+  "client": {
+    "id": "INS-98765",
+    "personal": {
+      "firstName": "János",
+      "lastName": "Nagy",
+      "dateOfBirth": "15/03/1985",
+      "nationalId": "8765432109"
+    },
+    "contact": {
+      "mobile": "06301234567",
+      "email": "nagy.janos@email.hu"
+    },
+    "location": {
+      "zip": "1011",
+      "city": "Budapest",
+      "street": "Fő utca",
+      "number": "1"
+    }
+  }
+}
